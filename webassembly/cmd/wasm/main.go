@@ -12,11 +12,13 @@ import (
 // to compile this golang file into web-assembly
 // 2. cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" ./
 func main() {
-	fmt.Println("Go Web Assembly")
-	js.Global().Set("formatJSON", jsonWrapper()) // expose operation
 
 	// need go keep waiting on a channel
-	<-make(chan bool)
+	c := make(chan struct{}, 0)
+
+	fmt.Println("Go Web Assembly")
+	js.Global().Set("formatJSON", jsonWrapper()) // expose operation
+	<-c
 }
 
 // prettyJson is for returning the string in beautified json format
